@@ -100,7 +100,7 @@ class App extends React.Component {
                     multiline
                     fullWidth
                     id="filled-description"
-                    label="Beschreibung"
+                    label="Beschreibung (bitte genau)"
                     onChange={(event) => {
                       this.setState({ description: event.target.value });
                     }}
