@@ -39,7 +39,6 @@ class App extends React.Component {
   };
 
   addNewJob = async () => {
-    console.log(this.state.level);
     let data = {
       id: 1,
       name: this.state.name,
