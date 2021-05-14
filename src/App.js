@@ -18,11 +18,11 @@ class App extends React.Component {
     name: "",
     room: "",
     description: "",
-    supportLevel: -1,
+    supportLevel: 1,
   };
 
-  getJobs = () => {
-    fetch("https://apiticketsystem.herokuapp.com/jobs")
+  getJobs = async () => {
+    await fetch("https://apiticketsystem.herokuapp.com/jobs")
       .then((res) => res.json())
       .then((data) => {
         this.setState({ jobs: data.jobs.reverse() });
@@ -38,7 +38,7 @@ class App extends React.Component {
     this.getJobs();
   };
 
-  addNewJob = () => {
+  addNewJob = async () => {
     console.log(this.state.level);
     let data = {
       id: 1,
@@ -48,17 +48,20 @@ class App extends React.Component {
       supportLevel: this.state.supportLevel,
       done: false,
     };
-    fetch("https://apiticketsystem.herokuapp.com/addJob", {
+    await fetch("https://apiticketsystem.herokuapp.com/addJob", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-type": "application/json; charset=UTF-8" },
     }).then((response) => alert("Versendet"));
+    await this.getJobs();
+    this.setState({ openForm: true });
   };
 
   render() {
     return (
       <div className="App">
         <div class="container">
+          <div class="button">
           <Button
             variant="contained"
             color="primary"
@@ -66,6 +69,7 @@ class App extends React.Component {
           >
             {this.state.openForm ? "Neues Ticket anlegen" : "Aktuelle Tickets"}
           </Button>
+          </div>
           {this.state.openForm ? (
             <JobsTable jobs={this.state.jobs} />
           ) : (
@@ -105,7 +109,7 @@ class App extends React.Component {
                       this.setState({ description: event.target.value });
                     }}
                     value={this.state.description}
-                    variant="filled"
+                    variant="outlined"
                     rows={4}
                   />
                 </div>
@@ -113,6 +117,7 @@ class App extends React.Component {
                   <NativeSelect
                     fullWidth
                     value={this.state.supportLevel}
+                    defaultValue={1}
                     onChange={(event) => {
                       this.setState({ supportLevel: event.target.value });
                     }}
